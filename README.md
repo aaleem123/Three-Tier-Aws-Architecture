@@ -61,6 +61,12 @@ We are adding monitoring and alerting using:
 - 🔔 SNS Topic + Email Subscription for real-time alerts
 This helps with early detection of issues and proactive response.
 
+## 6. RDS (Relational Database Service)
+We are provisioning a secure and private Amazon RDS instances to serve the database tier.
+- 🧱 Engine: MySQL (can be easily swapped with PostgreSQL, MariaDB, etc.)
+- 🏷️ Instance Class: e.g., db.t3.micro (customizable for dev/prod)
+- 🚫 No Public Access: RDS is placed in private subnets for isolation
+
 ## 6. Best Practices
 - ✅ Modules: Clean, reusable code in modules/
 - ✅ .gitignore: Keeps secrets, states, and local files out of Git
