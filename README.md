@@ -1,14 +1,13 @@
-# Three-Tier Architecture on AWS using Terraform
+# Three Tier Architecture on AWS using Terraform
 This project implements a three-tier architecture on AWS using Terraform for codesecure, modular, and production-grade AWS infrastructure. The architecture follows best practices for high availability, scalability, and security. We are having the following components in this project:
 
 <img width="1022" height="1051" alt="Three Tier Aws Architecture drawio" src="https://github.com/user-attachments/assets/e4a5a620-f073-4e2f-b464-ce896bb55620" />
 
 ## ✅ Prerequisites
 Before running this project, ensure you have the following tools and configurations set up:
-- 🔧 Required Tools
-- AWS CLI – for managing AWS resources from the terminal
-- Terraform – for Infrastructure as Code
-- Git – for version control and pushing to GitHub
+- AWS CLI – for managing AWS resources from the terminal: aws configure
+- Terraform – for Infrastructure as Code: download latest version of Terraform 
+- Git – for version control and pushing to GitHub: configure github once
 
 ## 1. Bootstrap Stage (Secure Terraform Backend)
 Creating a dedicated S3 bucket to store Terraform state files safely:
@@ -16,7 +15,7 @@ Creating a dedicated S3 bucket to store Terraform state files safely:
 - ✅ Has versioning and object locking (protects against accidental deletion)
 - 🧾 Bucket policy allows access only to your terraform-mainuser IAM user
 - 📂 Separate logging bucket for audit trails
-- We are using s3 gateway endpoint so we don't pay for a NAT gateway, gateway endpoints cost nothing hence this is sustainable option.
+- 🛡️ S3 Gateway Endpoint is used instead of a NAT Gateway — this allows private subnets to access S3 at zero cost, making it a highly sustainable and cost-effective option
 This ensures your infrastructure state is centralized, secure, and immutable.
 
 ## 2. Network Layer (VPC, Subnets, NAT, Routes)
