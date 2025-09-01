@@ -9,6 +9,18 @@ Before running this project, ensure you have the following tools and configurati
 - Terraform – for Infrastructure as Code: download latest version of Terraform 
 - Git – for version control and pushing to GitHub: configure github once
 
+## 🔐 IAM & Bucket Policies (Secure Access Controls)
+We’ve implemented strong access control mechanisms to ensure Terraform can interact securely with the S3 backend:
+- 👤 IAM User:
+A dedicated IAM user named terraform-mainuser is used to run Terraform. This avoids using the root user and aligns with AWS best practices.
+- 🪪 S3 Bucket Policy:
+The backend S3 bucket has a bucket policy that:
+- ✅ Grants full access (GetObject, PutObject, DeleteObject, ListBucket) only to the terraform-mainuser
+- 🚫 Denies all access over insecure transport (http) using the aws:SecureTransport condition: over HTTPs 
+- 🔐 Ensures least privilege and secure, encrypted communication at all times
+- 🛡️ No root access used:
+We intentionally do not use the root account in any policies or operations. The project is built around delegated access through a least-privilege IAM user.
+
 ## 1. Bootstrap Stage (Secure Terraform Backend)
 Creating a dedicated S3 bucket to store Terraform state files safely:
 - 🔒 Uses KMS encryption
@@ -23,7 +35,8 @@ We are provisioning the core network:
 - 🛡️ Custom VPC
 - 🌐 Public subnets (for web tier)
 - 🔐 Private subnets (for app + DB tier)
-- 🚪 NAT Gateways for outbound access from private instances, we keep per each subent so if one goes down, our other setup is solid.
+- 🗺️ Route tables created and correctly associated with the respective public and private subnets, along with IGW/NAT
+- 🚪 NAT Gateways (one per AZ) to allow outbound internet access from private instances — ensures high availability if one AZ goes down
 - 📡 Internet Gateway for public access
 This gives you a solid foundation for isolation, security, and control.
 
