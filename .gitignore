@@ -1,0 +1,17 @@
+# Terraform state and plan files
+*.tfstate
+*.tfstate.backup
+tfplan
+
+# Terraform local working directory
+.terraform/
+
+# Sensitive config
+*.tfvars
+backend.hcl
+
+# OS and IDE files
+.DS_Store
+*.log
+.idea/
+.vscode/
