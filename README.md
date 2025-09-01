@@ -67,7 +67,7 @@ We are provisioning a secure and private Amazon RDS instances to serve the datab
 - 🏷️ Instance Class: e.g., db.t3.micro (customizable for dev/prod)
 - 🚫 No Public Access: RDS is placed in private subnets for isolation
 
-## 6. Best Practices
+## Best Practices
 - ✅ Modules: Clean, reusable code in modules/
 - ✅ .gitignore: Keeps secrets, states, and local files out of Git
 - ✅ Remote backend: Ensures shared, protected state management
