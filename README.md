@@ -27,8 +27,7 @@ Creating a dedicated S3 bucket to store Terraform state files safely:
 - ✅ Has versioning and object locking (protects against accidental deletion)
 - 🧾 Bucket policy allows access only to your terraform-mainuser IAM user
 - 📂 Separate logging bucket for audit trails
-- 🛡️ S3 Gateway Endpoint is used instead of a NAT Gateway — this allows private subnets to access S3 at zero cost, making it a highly sustainable and cost-effective option
-This ensures your infrastructure state is centralized, secure, and immutable.
+- 🛡️ S3 Gateway Endpoint is used instead of a NAT Gateway — this allows private subnets to access S3 at zero cost, making it a highly sustainable and cost-effective option.
 
 ## 2. Network Layer (VPC, Subnets, NAT, Routes)
 We are provisioning the core network:
