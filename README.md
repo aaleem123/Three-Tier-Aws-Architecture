@@ -73,7 +73,7 @@ We’ve structured the project for scalability and reusability using a modular T
 - This is our environment layer that wires all modules together for the dev environment. Uses module blocks to call network, compute, security, observability, and rds.
 - Loads environment-specific variables via terraform.tfvars
 - 🔗 Remote Backend Setup with Native State Locking:
-        - The backend is defined directly inside envs/dev to enable secure and remote state storage. We are using S3 native state locking for to prevent concurrent runs from           modifying the state at the same time.
+        The backend is defined directly inside envs/dev to enable secure and remote state storage. We are using S3 native state locking for to prevent concurrent runs from           modifying the state at the same time.
   
 ## Best Practices
 - ✅ Modules: Clean, reusable code in modules/
