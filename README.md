@@ -5,7 +5,7 @@ This project implements a three-tier architecture on AWS using Terraform for cod
 
 ## ✅ Prerequisites
 Before running this project, ensure you have the following tools and configurations set up:
-- AWS CLI – for managing AWS resources from the terminal: aws configure
+- AWS CLI – for managing AWS resources from the terminal: aws configure to log in as your user with AWS Access Key ID and AWS Secret Access Key.
 - Terraform – for Infrastructure as Code: download latest version of Terraform 
 - Git – for version control and pushing to GitHub: configure github once
 
@@ -67,6 +67,13 @@ We are provisioning a secure and private Amazon RDS instances to serve the datab
 - 🏷️ Instance Class: e.g., db.t3.micro (customizable for dev/prod)
 - 🚫 No Public Access: RDS is placed in private subnets for isolation
 
+## 📦 Modular Structure & Backend with Native S3 State Locking
+We’ve structured the project for scalability and reusability using a modular Terraform layout:
+  📁 envs/dev/
+- This is our environment layer that wires all modules together for the dev environment. Uses module blocks to call network, compute, security, observability, and rds.
+- Loads environment-specific variables via terraform.tfvars
+- 🔗 Remote Backend Setup with Native State Locking: The backend is defined directly inside envs/dev to enable secure and remote state storage. We are using S3 native state locking for to prevent concurrent runs from modifying the state at the same time.
+  
 ## Best Practices
 - ✅ Modules: Clean, reusable code in modules/
 - ✅ .gitignore: Keeps secrets, states, and local files out of Git
