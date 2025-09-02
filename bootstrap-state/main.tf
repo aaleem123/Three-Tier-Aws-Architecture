@@ -88,7 +88,7 @@ resource "aws_s3_bucket_policy" "tf_backend_bucket_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Sid: "AllowTerraformUserAccess",
+        Sid: "AllowTerraformUserObjectActions",
         Effect: "Allow",
         Principal = {
           AWS = "arn:aws:iam::682475225405:user/terraform-mainuser"
@@ -97,13 +97,18 @@ resource "aws_s3_bucket_policy" "tf_backend_bucket_policy" {
           "s3:GetObject",
           "s3:GetObjectVersion",
           "s3:PutObject",
-          "s3:DeleteObject",
-          "s3:ListBucket"
+          "s3:DeleteObject"
         ],
         Resource = [
-          aws_s3_bucket.three_tier_bucket.arn,
           "${aws_s3_bucket.three_tier_bucket.arn}/*"
         ]
+      },
+      {
+        Sid: "AllowTerraformUserList",
+        Effect: "Allow",
+        Principal = { AWS = "arn:aws:iam::682475225405:user/terraform-mainuser" },
+        Action   = ["s3:ListBucket"],
+        Resource = aws_s3_bucket.three_tier_bucket.arn
       },
       {
         Sid: "DenyInsecureTransport",
@@ -198,6 +203,29 @@ resource "aws_s3_bucket_public_access_block" "log_bucket_pub" {
   restrict_public_buckets = true
 }
 
+# Allow S3 Server Access Logging service to PUT into log bucket
+data "aws_caller_identity" "current" {}
+
+resource "aws_s3_bucket_policy" "log_bucket_policy" {
+  bucket = aws_s3_bucket.log_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Sid: "AllowS3ServerAccessLoggingDelivery",
+        Effect: "Allow",
+        Principal = { Service = "logging.s3.amazonaws.com" },
+        Action    = "s3:PutObject",
+        Resource  = "${aws_s3_bucket.log_bucket.arn}/log/*",
+        Condition = {
+          ArnLike      = { "aws:SourceArn": aws_s3_bucket.three_tier_bucket.arn },
+          StringEquals = { "aws:SourceAccount": data.aws_caller_identity.current.account_id }
+        }
+      }
+    ]
+  })
+}
 
 resource "aws_s3_bucket_logging" "logging_bucket_connection" {
   bucket = aws_s3_bucket.three_tier_bucket.id
